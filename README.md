@@ -4,27 +4,22 @@ An open-source Python toolkit and cross-platform application for importing, proc
 
 > **Status:** Early development — scientific engine foundation (v0.1.0). Results are intended for research assistance and must be checked against experimental context and validated methods.
 
-## Features in the first milestone
+## First milestone
 
-- Read two-column CSV spectra (wavenumber or Raman shift, intensity).
-- Validate and sort spectral data.
-- Savitzky–Golay smoothing.
-- Asymmetric least-squares (AsLS) baseline estimation.
+- Read and validate two-column CSV spectra.
+- Savitzky–Golay smoothing and AsLS baseline correction.
 - Min–max normalization.
 - Configurable peak detection with SciPy.
-- Exportable peak tables and reproducible tests using synthetic spectra.
+- Compare spectra on their overlapping x-axis range.
+- Synthetic test data and automated scientific tests.
 
 ## Quick start
 
 Python 3.10 or newer is recommended.
 
-```bash
+```powershell
 python -m venv .venv
-# Windows PowerShell:
 .venv\Scripts\Activate.ps1
-# macOS/Linux:
-# source .venv/bin/activate
-
 python -m pip install --upgrade pip
 pip install -e ".[dev]"
 pytest
@@ -32,7 +27,7 @@ pytest
 
 ## CSV format
 
-The first row should contain column headers. The default column names are `x` and `intensity`.
+The first row contains headers. Default column names are `x` and `intensity`.
 
 ```csv
 x,intensity
@@ -41,7 +36,7 @@ x,intensity
 404,0.18
 ```
 
-The x-axis may represent IR wavenumber (cm⁻¹) or Raman shift (cm⁻¹). Keep the measurement type and units in your experiment notes. SpecLab does not infer whether intensity is absorbance, transmittance, or Raman signal; choose interpretation appropriate to your instrument and data.
+The x-axis may represent IR wavenumber or Raman shift (cm⁻¹). SpecLab does not infer whether intensity is absorbance, transmittance, or Raman signal; record the measurement type and units in your experiment notes.
 
 ## Python example
 
@@ -51,10 +46,10 @@ from speclab.processing.smoothing import smooth_spectrum
 from speclab.analysis.peak_detection import detect_peaks
 
 spectrum = read_csv_spectrum("data/samples/sample_ir.csv")
-smoothed = smooth_spectrum(spectrum, window_length= nine if False else  nine)
+smoothed = smooth_spectrum(spectrum, window_length=9, polyorder=3)
+peaks = detect_peaks(smoothed, prominence=0.05, distance=3)
+print(peaks)
 ```
-
-The API is being developed. See the examples and tests for the current supported interface.
 
 ## Project layout
 
@@ -62,11 +57,11 @@ The API is being developed. See the examples and tests for the current supported
 - `apps/web/`: Streamlit interface (planned).
 - `apps/desktop/`: PySide6 interface (planned).
 - `tests/`: automated scientific and input-validation tests.
-- `data/samples/`: small synthetic demonstration datasets.
+- `data/samples/`: synthetic demonstration datasets.
 
 ## Scientific notes
 
-Peak detection identifies local maxima in the supplied signal. For transmittance spectra, absorption bands may appear as minima; invert or otherwise transform the signal only when scientifically justified, and record that transformation. Baseline correction and smoothing can change peak shapes and positions, so compare processed results with the raw data.
+Peak detection identifies local maxima in the supplied signal. For transmittance spectra, absorption bands may appear as minima; transform the signal only when scientifically justified and document that choice. Smoothing and baseline correction can change peak shapes and positions, so always compare processed results with raw data.
 
 Synthetic data are for software verification, not reference spectra or chemical identification.
 
@@ -75,7 +70,7 @@ Synthetic data are for software verification, not reference spectra or chemical 
 1. Shared scientific engine and tests.
 2. Streamlit web application.
 3. PySide6 desktop application.
-4. Additional formats (including JCAMP-DX), reference-data workflows, and computational chemistry integrations (e.g. ORCA output parsing).
+4. JCAMP-DX support, documented reference-data workflows, and computational chemistry integrations such as ORCA output parsing.
 
 ## License
 
