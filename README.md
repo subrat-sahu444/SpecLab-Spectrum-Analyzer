@@ -2,32 +2,39 @@
 
 An open-source Python toolkit and cross-platform application for importing, processing, detecting peaks in, and comparing IR and Raman spectra.
 
-> **Status:** Early development — scientific engine foundation (v0.1.0). Results are intended for research assistance and must be checked against experimental context and validated methods.
+> **Status:** Early development — shared scientific engine and first Streamlit web interface (v0.2.0). Results are intended for research assistance and must be checked against experimental context and validated methods.
 
-## First milestone
+## Current capabilities
 
-- Read and validate two-column CSV spectra.
+- Read and validate CSV spectra with selectable x-axis and intensity columns.
 - Savitzky–Golay smoothing and AsLS baseline correction.
 - Min–max normalization.
-- Configurable peak detection with SciPy.
-- Compare spectra on their overlapping x-axis range.
-- Synthetic test data and automated scientific tests.
+- Configurable local-maximum peak detection.
+- Streamlit web interface with spectrum plotting.
+- Download processed spectra, detected peak tables, and PNG graphs.
+- Compare spectra on their overlapping x-axis range through the Python engine.
 
-## Quick start
+## Run the web application
 
 Python 3.10 or newer is recommended.
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -e ".[dev]"
-pytest
+cd C:\Users\subra\SpecLab-Spectrum-Analyzer
+.\.venv\Scripts\python.exe -m pip install -e ".[web,dev]"
+.\.venv\Scripts\python.exe -m streamlit run apps/web/app.py
+```
+
+Streamlit will print a local URL (usually `http://localhost:8501`). Open it in your browser.
+
+To run the tests:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest
 ```
 
 ## CSV format
 
-The first row contains headers. Default column names are `x` and `intensity`.
+The first row contains headers. The web app lets you choose the x-axis and intensity columns.
 
 ```csv
 x,intensity
@@ -54,8 +61,8 @@ print(peaks)
 ## Project layout
 
 - `speclab/`: shared scientific analysis engine.
-- `apps/web/`: Streamlit interface (planned).
-- `apps/desktop/`: PySide6 interface (planned).
+- `apps/web/`: Streamlit web interface.
+- `apps/desktop/`: planned PySide6 interface.
 - `tests/`: automated scientific and input-validation tests.
 - `data/samples/`: synthetic demonstration datasets.
 
