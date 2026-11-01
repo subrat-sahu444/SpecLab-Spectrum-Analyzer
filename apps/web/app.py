@@ -162,7 +162,7 @@ with left:
     ax.grid(True, alpha=0.25)
     ax.legend()
     ax.margins(x=0)
-    st.pyplot(fig, clear_figure=True)
+    st.pyplot(fig, clear_figure=False)
     image_buffer = io.BytesIO()
     fig.savefig(image_buffer, format="png", dpi=200, bbox_inches="tight")
     plt.close(fig)
