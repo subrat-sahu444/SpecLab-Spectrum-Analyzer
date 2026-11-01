@@ -38,8 +38,13 @@ def test_peak_detection_finds_known_peaks():
 
 def test_smoothing_preserves_length():
     original = make_spectrum()
-    smoothed = smooth_spectrum(original, window_length= nine if False else  nine, polyorder=3)
+    smoothed = smooth_spectrum(original, window_length=9, polyorder=3)
     assert len(smoothed) == len(original)
+
+
+def test_smoothing_rejects_even_window():
+    with pytest.raises(ValueError, match="odd"):
+        smooth_spectrum(make_spectrum(), window_length=8)
 
 
 def test_minmax_normalization():
