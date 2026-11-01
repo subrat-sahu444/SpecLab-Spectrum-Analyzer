@@ -77,8 +77,8 @@ with st.sidebar:
     smoothing_order = st.number_input(
         "Polynomial order",
         min_value=1,
-        max_value=5,
-        value=3,
+        max_value=min(5, int(smoothing_window) - 1),
+        value=min(3, int(smoothing_window) - 1),
         disabled=not apply_smoothing,
     )
 
@@ -128,7 +128,11 @@ try:
             polyorder=int(smoothing_order),
         )
     if apply_baseline:
-        processed = correct_baseline(processed, lam=float(baseline_lam), asymmetry=float(baseline_asymmetry))
+        processed = correct_baseline(
+            processed,
+            lam=float(baseline_lam),
+            asymmetry=float(baseline_asymmetry),
+        )
     if apply_normalization:
         processed = normalize_minmax(processed)
 
