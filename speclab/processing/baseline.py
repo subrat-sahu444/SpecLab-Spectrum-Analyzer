@@ -24,7 +24,13 @@ def estimate_asls_baseline(intensity, *, lam=1e5, asymmetry=0.01, iterations=10)
         raise ValueError("iterations must be at least 1.")
 
     length = y.size
-    difference = sparse.diags([1, -2, 1], [0, 1, 2], shape=(length - 2, length), format="csc")
+    difference = sparse.diags(
+        [1.0, -2.0, 1.0],
+        [0, 1, 2],
+        shape=(length - 2, length),
+        format="csc",
+        dtype=float,
+    )
     penalty = lam * (difference.T @ difference)
     weights = np.ones(length)
 
