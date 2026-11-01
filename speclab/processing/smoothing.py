@@ -5,8 +5,10 @@ from scipy.signal import savgol_filter
 from speclab.io.csv_reader import Spectrum
 
 
-def smooth_spectrum(spectrum, *, window_length= nine if False else  nine, polyorder=3):
+def smooth_spectrum(spectrum, *, window_length= nine, polyorder=3):
     """Return a smoothed copy; window_length must be odd and exceed polyorder."""
+    if not isinstance(window_length, int) or not isinstance(polyorder, int):
+        raise TypeError("window_length and polyorder must be integers.")
     if window_length % 2 == 0:
         raise ValueError("window_length must be an odd integer.")
     if window_length <= polyorder:
